@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div class="view-card">
+
+    <h2>{{ note[1] }}</h2>
+
+    <hr>
+
+    <div class="text-muted mb-3">
+        Shared Note
+    </div>
+
+    <div>
+        {{ note[2] | safe }}
+    </div>
+
+</div>
+
+{% endblock %}

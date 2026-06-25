@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div class="container mt-5">
+
+    <div class="card shadow p-5">
+
+        <h2 class="mb-4">
+            My Profile
+        </h2>
+
+        <hr>
+
+        <p>
+            <strong>Username:</strong>
+            {{ user[0] }}
+        </p>
+
+        <p>
+            <strong>Email:</strong>
+            {{ user[1] }}
+        </p>
+
+        <p>
+            <strong>Total Notes Created:</strong>
+            {{ total_notes }}
+        </p>
+
+        <hr>
+
+        <a href="/change-password"
+           class="btn btn-dark">
+            Change Password
+        </a>
+
+    </div>
+
+</div>
+
+{% endblock %}

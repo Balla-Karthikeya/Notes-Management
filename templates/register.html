@@ -1,0 +1,162 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div class="auth-wrapper">
+
+<div class="auth-card">
+
+<h2>Register</h2>
+
+<form method="POST">
+
+    <input type="text"
+           name="username"
+           class="form-control mb-3"
+           placeholder="Username"
+           required>
+
+    <input type="email"
+           name="email"
+           class="form-control mb-3"
+           placeholder="Email"
+           required>
+
+    <input type="password"
+           name="password"
+           id="registerPassword"
+           class="form-control mb-2"
+           placeholder="Password"
+           required>
+
+    <div class="mb-3">
+
+        <small>
+            Strength:
+            <span id="strengthText">
+                -
+            </span>
+        </small>
+
+        <div class="progress mt-1">
+
+            <div id="strengthBar"
+                 class="progress-bar"
+                 style="width:0%">
+            </div>
+
+        </div>
+
+    </div>
+
+    <div class="form-check mb-3">
+
+        <input class="form-check-input"
+               type="checkbox"
+               id="showRegisterPassword">
+
+        <label class="form-check-label"
+               for="showRegisterPassword">
+            Show Password
+        </label>
+
+    </div>
+
+    <button class="btn-black">
+        Register
+    </button>
+
+</form>
+
+<div class="text-center mt-4">
+
+    <a href="/login">
+        Already have an account?
+    </a>
+
+</div>
+
+
+</div>
+
+</div>
+
+<script>
+
+document.getElementById("showRegisterPassword")
+.addEventListener("change", function(){
+
+    let password =
+    document.getElementById("registerPassword");
+
+    if(this.checked){
+        password.type = "text";
+    }
+    else{
+        password.type = "password";
+    }
+
+});
+
+const passwordField =
+document.getElementById("registerPassword");
+
+const strengthText =
+document.getElementById("strengthText");
+
+const strengthBar =
+document.getElementById("strengthBar");
+
+passwordField.addEventListener("keyup", function(){
+
+    let value = passwordField.value;
+
+    let strength = 0;
+
+    if(value.length >= 8)
+        strength++;
+
+    if(/[A-Z]/.test(value))
+        strength++;
+
+    if(/[0-9]/.test(value))
+        strength++;
+
+    if(/[!@#$%^&*]/.test(value))
+        strength++;
+
+    if(strength <= 1){
+
+        strengthText.innerHTML = "Weak";
+
+        strengthBar.style.width = "33%";
+        strengthBar.className =
+        "progress-bar bg-danger";
+
+    }
+
+    else if(strength <= 3){
+
+        strengthText.innerHTML = "Medium";
+
+        strengthBar.style.width = "66%";
+        strengthBar.className =
+        "progress-bar bg-warning";
+
+    }
+
+    else{
+
+        strengthText.innerHTML = "Strong";
+
+        strengthBar.style.width = "100%";
+        strengthBar.className =
+        "progress-bar bg-success";
+
+    }
+
+});
+
+</script>
+
+{% endblock %}

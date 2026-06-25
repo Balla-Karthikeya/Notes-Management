@@ -1,0 +1,278 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div class="dashboard-header">
+
+
+<div>
+
+    <div class="d-flex align-items-center">
+
+        <div class="avatar-circle me-3">
+            {{ session['username'][0]|upper }}
+        </div>
+
+        <div>
+
+            <h2 class="mb-0">
+                Welcome, {{ session['username'] }}
+            </h2>
+
+            <div class="mt-2">
+
+                <span class="badge bg-dark p-2 fs-6">
+                    📝 Total Notes: {{ total_notes }}
+                </span>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<a href="/addnote"
+   class="btn btn-dark">
+    + Add Note
+</a>
+
+
+</div>
+
+<div class="card mb-4 mt-4">
+
+    <div class="card-header">
+        <h5 class="mb-0">
+            📊 Recent Activity
+        </h5>
+    </div>
+
+    <div class="card-body">
+
+        {% if activities %}
+
+            <ul class="list-group">
+
+                {% for activity in activities %}
+
+                <li class="list-group-item">
+
+                    ✓ {{ activity[2] }}
+
+                    <span class="text-muted float-end">
+
+                        {{ activity[3].strftime('%d-%m-%Y %H:%M') }}
+
+                    </span>
+
+                </li>
+
+                {% endfor %}
+
+            </ul>
+
+        {% else %}
+
+            <p class="text-muted">
+                No recent activity.
+            </p>
+
+        {% endif %}
+
+    </div>
+
+</div>
+
+<div class="row mb-4 mt-4">
+
+<div class="col-md-3">
+
+    <select id="categoryFilter"
+            class="form-control">
+
+        <option value="all">All Categories</option>
+        <option value="study">Study</option>
+        <option value="personal">Personal</option>
+        <option value="work">Work</option>
+        <option value="ideas">Ideas</option>
+        <option value="others">Others</option>
+
+    </select>
+
+</div>
+
+<div class="col-md-6">
+
+    <input type="text"
+           id="searchInput"
+           class="form-control"
+           placeholder="🔍 Search notes by title or content...">
+
+</div>
+
+
+</div>
+
+<div class="row">
+
+{% for note in notes %}
+
+<div class="col-md-4 mb-4 searchable-note"
+     data-title="{{ note[1]|lower }}"
+     data-content="{{ note[2]|lower }}"
+     data-category="{{ note[5]|lower }}">
+
+
+<div class="note-card">
+
+    <div class="note-title">
+
+        {% if note[6] == 1 %}
+            📌
+        {% endif %}
+
+        {% if note[7] == 1 %}
+            ⭐
+        {% endif %}
+
+        {{ note[1] }}
+
+    </div>
+
+    <div class="text-muted small mb-2">
+        📅 Created: {{ note[3].strftime('%d-%m-%Y') }}
+    </div>
+
+    <div class="text-muted small mb-2">
+        📂 Category: {{ note[5] }}
+    </div>
+
+    <div class="note-content">
+        {{ note[2]|striptags|truncate(100) }}...
+    </div>
+
+    <div class="note-actions">
+
+        <a href="/toggle-pin/{{ note[0] }}"
+           class="btn btn-warning btn-sm">
+
+            {% if note[6] == 1 %}
+                Unpin
+            {% else %}
+                Pin
+            {% endif %}
+
+        </a>
+
+        <a href="/toggle-favorite/{{ note[0] }}"
+           class="btn btn-info btn-sm">
+
+            {% if note[7] == 1 %}
+                Remove ⭐
+            {% else %}
+                Favorite ⭐
+            {% endif %}
+
+        </a>
+
+        <a href="/export-pdf/{{ note[0] }}"
+           class="btn btn-success btn-sm">
+            PDF
+        </a>
+
+        <a href="/summarize/{{ note[0] }}"
+           class="btn btn-primary btn-sm">
+            Summarize
+        </a>
+
+
+
+
+        <a href="/share-note/{{ note[0] }}"
+            class="btn btn-primary btn-sm">
+             Share
+        </a>
+
+        <a href="/viewnote/{{ note[0] }}"
+           class="btn btn-dark btn-sm">
+            View
+        </a>
+
+        <a href="/editnote/{{ note[0] }}"
+           class="btn btn-secondary btn-sm">
+            Edit
+        </a>
+
+        <a href="/deletenote/{{ note[0] }}"
+           class="btn btn-danger btn-sm"
+           onclick="return confirm('Move note to Trash?')">
+            Delete
+        </a>
+
+    </div>
+
+</div>
+
+
+</div>
+
+{% endfor %}
+
+</div>
+
+<script>
+
+function filterNotes() {
+
+    let searchValue =
+    document.getElementById("searchInput")
+    .value.toLowerCase();
+
+    let categoryValue =
+    document.getElementById("categoryFilter")
+    .value.toLowerCase();
+
+    let notes =
+    document.querySelectorAll(".searchable-note");
+
+    notes.forEach(function(note){
+
+        let title =
+        note.getAttribute("data-title");
+
+        let content =
+        note.getAttribute("data-content");
+
+        let category =
+        note.getAttribute("data-category");
+
+        let matchesSearch =
+            title.includes(searchValue) ||
+            content.includes(searchValue);
+
+        let matchesCategory =
+            categoryValue === "all" ||
+            category === categoryValue;
+
+        if(matchesSearch && matchesCategory){
+            note.style.display = "block";
+        }
+        else{
+            note.style.display = "none";
+        }
+
+    });
+
+}
+
+document.getElementById("searchInput")
+.addEventListener("keyup", filterNotes);
+
+document.getElementById("categoryFilter")
+.addEventListener("change", filterNotes);
+
+</script>
+
+{% endblock %}

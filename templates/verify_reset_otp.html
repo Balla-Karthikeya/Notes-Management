@@ -1,0 +1,50 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div class="auth-wrapper">
+
+    <div class="auth-card">
+
+        <h2 class="mb-4 text-center">
+            Verify OTP
+        </h2>
+
+        <form method="POST">
+
+            <div class="mb-3">
+
+                <label for="otp" class="form-label">
+                    One-Time Password (OTP)
+                </label>
+
+                <input
+                    type="text"
+                    id="otp"
+                    name="otp"
+                    class="form-control"
+                    placeholder="Enter OTP"
+                    required
+                >
+
+            </div>
+
+            <button type="submit" class="btn-black w-100">
+                Verify OTP
+            </button>
+
+        </form>
+
+        <div class="text-center mt-3">
+
+            <a href="/forgot-password">
+                Back
+            </a>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}

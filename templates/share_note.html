@@ -1,0 +1,56 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div class="view-card">
+
+```
+<h2>
+    🔗 Share Note
+</h2>
+
+<hr>
+
+<input
+    type="text"
+    id="shareLink"
+    class="form-control"
+    value="{{ share_link }}"
+    readonly>
+
+<button
+    class="btn btn-primary mt-3"
+    onclick="copyLink()">
+
+    📋 Copy Link
+
+</button>
+
+<a href="/dashboard"
+   class="btn btn-secondary mt-3">
+
+    Back
+
+</a>
+```
+
+</div>
+
+<script>
+
+function copyLink(){
+
+    let copyText =
+    document.getElementById("shareLink");
+
+    navigator.clipboard.writeText(
+        copyText.value
+    );
+
+    alert("Link Copied Successfully!");
+
+}
+
+</script>
+
+{% endblock %}

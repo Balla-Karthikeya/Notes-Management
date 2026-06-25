@@ -1,0 +1,174 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<h2 class="mb-4">Add New Note</h2>
+
+<div class="note-form">
+
+<form method="POST">
+
+    <div class="mb-3">
+
+        <label class="form-label">
+            Title
+        </label>
+
+        <input
+            type="text"
+            name="title"
+            class="form-control"
+            required
+        >
+
+    </div>
+
+    <div class="mb-3">
+
+        <label class="form-label">
+            Category
+        </label>
+
+        <select
+            name="category"
+            class="form-control"
+            required
+        >
+
+            <option value="">
+                Select Category
+            </option>
+
+            <option value="Study">
+                Study
+            </option>
+
+            <option value="Personal">
+                Personal
+            </option>
+
+            <option value="Work">
+                Work
+            </option>
+
+            <option value="Ideas">
+                Ideas
+            </option>
+
+            <option value="Others">
+                Others
+            </option>
+
+        </select>
+
+    </div>
+
+    <div class="mb-3">
+
+        <label class="form-label">
+            Content
+        </label>
+
+        <textarea
+            name="content"
+            id="editor"
+            class="form-control"
+            required>
+        </textarea>
+
+    </div>
+
+    <div class="mb-3">
+
+        <div class="alert alert-info">
+
+            <strong id="wordCount">
+                Words: 0
+            </strong>
+
+            |
+
+            <strong id="charCount">
+                Characters: 0
+            </strong>
+
+            |
+
+            <strong id="readingTime">
+                Reading Time: 0 min
+            </strong>
+
+        </div>
+
+    </div>
+
+    <button
+        type="submit"
+        class="btn btn-dark">
+
+        Save Note
+
+    </button>
+
+    <a href="/dashboard"
+       class="btn btn-secondary">
+
+        Cancel
+
+    </a>
+
+</form>
+
+</div>
+
+<script>
+
+window.onload = function() {
+
+    CKEDITOR.replace('editor');
+
+    CKEDITOR.instances.editor.on('change', function(){
+
+        let text =
+        CKEDITOR.instances.editor.getData();
+
+        let plainText =
+        text.replace(/<[^>]*>/g, '');
+
+        let words =
+        plainText.trim() === ''
+        ? 0
+        : plainText.trim().split(/\s+/).length;
+
+        let chars =
+        plainText.length;
+
+        let minutes =
+        words === 0
+        ? 0
+        : Math.ceil(words / 200);
+
+        document.getElementById(
+            "wordCount"
+        ).innerHTML =
+        "Words: " + words;
+
+        document.getElementById(
+            "charCount"
+        ).innerHTML =
+        "Characters: " + chars;
+
+        document.getElementById(
+            "readingTime"
+        ).innerHTML =
+        "Reading Time: " +
+        minutes +
+        " min";
+
+    });
+
+};
+
+</script>
+
+{% endblock %}

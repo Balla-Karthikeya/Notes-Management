@@ -1,0 +1,48 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<h2 class="mb-4">
+    🗑 Trash Bin
+</h2>
+
+<div class="row">
+
+{% for note in notes %}
+
+<div class="col-md-4 mb-4">
+
+    <div class="note-card">
+
+        <div class="note-title">
+            {{ note[1] }}
+        </div>
+
+        <div class="note-content">
+            {{ note[2]|striptags|replace('&nbsp;', ' ')|truncate(100) }}...
+        </div>
+
+        <div class="mt-3">
+
+            <a href="/restore-note/{{ note[0] }}"
+               class="btn btn-success btn-sm">
+                Restore
+            </a>
+
+            <a href="/delete-permanently/{{ note[0] }}"
+               class="btn btn-danger btn-sm"
+               onclick="return confirm('Delete permanently?')">
+                Delete Forever
+            </a>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endfor %}
+
+</div>
+
+{% endblock %}

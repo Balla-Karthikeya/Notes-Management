@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div class="view-card">
+
+    <h2>{{ note[1] }}</h2>
+
+    <hr>
+
+    <h4>📝 Summary</h4>
+
+    <div class="alert alert-info">
+
+        {{ summary }}
+
+    </div>
+
+    <a href="/viewnote/{{ note[0] }}"
+       class="btn btn-dark">
+        Back to Note
+    </a>
+
+</div>
+
+{% endblock %}

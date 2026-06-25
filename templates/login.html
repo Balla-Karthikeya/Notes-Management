@@ -1,0 +1,84 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div class="auth-wrapper">
+
+
+<div class="auth-card">
+
+    <h2>Login</h2>
+
+    <form method="POST">
+
+        <input type="email"
+               name="email"
+               class="form-control mb-3"
+               placeholder="Email"
+               required>
+
+        <input type="password"
+               name="password"
+               id="loginPassword"
+               class="form-control mb-2"
+               placeholder="Password"
+               required>
+
+        <div class="form-check mb-3">
+
+            <input class="form-check-input"
+                   type="checkbox"
+                   id="showLoginPassword">
+
+            <label class="form-check-label"
+                   for="showLoginPassword">
+                Show Password
+            </label>
+
+        </div>
+
+        <button class="btn-black">
+            Login
+        </button>
+
+    </form>
+
+    <div class="text-center mt-3">
+
+        <a href="/register">
+            Create Account
+        </a>
+
+        <br>
+
+        <a href="/forgot-password">
+            Forgot Password?
+        </a>
+
+    </div>
+
+</div>
+
+
+</div>
+
+<script>
+
+document.getElementById("showLoginPassword")
+.addEventListener("change", function(){
+
+    let password =
+    document.getElementById("loginPassword");
+
+    if(this.checked){
+        password.type = "text";
+    }
+    else{
+        password.type = "password";
+    }
+
+});
+
+</script>
+
+{% endblock %}

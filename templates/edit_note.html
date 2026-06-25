@@ -1,0 +1,180 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<h2 class="mb-4">Edit Note</h2>
+
+<div class="note-form">
+
+<form method="POST">
+
+    <div class="mb-3">
+
+        <label class="form-label">
+            Title
+        </label>
+
+        <input
+            type="text"
+            name="title"
+            value="{{ note[1] }}"
+            class="form-control"
+            required
+        >
+
+    </div>
+
+    <div class="mb-3">
+
+        <label class="form-label">
+            Category
+        </label>
+
+        <select
+            name="category"
+            class="form-control"
+            required
+        >
+
+            <option value="Study"
+                {% if note[5] == 'Study' %}selected{% endif %}>
+                Study
+            </option>
+
+            <option value="Personal"
+                {% if note[5] == 'Personal' %}selected{% endif %}>
+                Personal
+            </option>
+
+            <option value="Work"
+                {% if note[5] == 'Work' %}selected{% endif %}>
+                Work
+            </option>
+
+            <option value="Ideas"
+                {% if note[5] == 'Ideas' %}selected{% endif %}>
+                Ideas
+            </option>
+
+            <option value="Others"
+                {% if note[5] == 'Others' %}selected{% endif %}>
+                Others
+            </option>
+
+        </select>
+
+    </div>
+
+    <div class="mb-3">
+
+        <label class="form-label">
+            Content
+        </label>
+
+        <textarea
+            name="content"
+            id="editor"
+            class="form-control"
+            rows="8"
+            required>{{ note[2] }}</textarea>
+
+    </div>
+
+    <div class="mb-3">
+
+        <div class="alert alert-info">
+
+            <strong id="wordCount">
+                Words: 0
+            </strong>
+
+            |
+
+            <strong id="charCount">
+                Characters: 0
+            </strong>
+
+            |
+
+            <strong id="readingTime">
+                Reading Time: 0 min
+            </strong>
+
+        </div>
+
+    </div>
+
+    <button
+        type="submit"
+        class="btn btn-dark">
+        Update Note
+    </button>
+
+    <a href="/dashboard"
+       class="btn btn-secondary">
+        Cancel
+    </a>
+
+</form>
+
+</div>
+
+<script>
+
+window.onload = function() {
+
+    CKEDITOR.replace('editor');
+
+    CKEDITOR.instances.editor.on('instanceReady', function() {
+        updateStats();
+    });
+
+    CKEDITOR.instances.editor.on('change', function() {
+        updateStats();
+    });
+
+    function updateStats(){
+
+        let text =
+        CKEDITOR.instances.editor.getData();
+
+        let plainText =
+        text.replace(/<[^>]*>/g, '');
+
+        let words =
+        plainText.trim() === ''
+        ? 0
+        : plainText.trim().split(/\s+/).length;
+
+        let chars =
+        plainText.length;
+
+        let minutes =
+        words === 0
+        ? 0
+        : Math.ceil(words / 200);
+
+        document.getElementById(
+            "wordCount"
+        ).innerHTML =
+        "Words: " + words;
+
+        document.getElementById(
+            "charCount"
+        ).innerHTML =
+        "Characters: " + chars;
+
+        document.getElementById(
+            "readingTime"
+        ).innerHTML =
+        "Reading Time: " +
+        minutes +
+        " min";
+
+    }
+
+};
+
+</script>
+
+{% endblock %}
